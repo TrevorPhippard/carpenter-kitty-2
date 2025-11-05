@@ -1,0 +1,44 @@
+### Create a new user
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "email": "bob@example.com",
+  "username": "bob",
+  "passwordHash": "password",
+  "isActive": true,
+  "isVerified": false,
+  "locale": "en"
+}
+
+###
+
+### Get all users
+GET http://localhost:8080/users
+Accept: application/json
+
+###
+
+### Get a user by ID (replace {id} with a real UUID)
+GET http://localhost:8080/users/{id}
+Accept: application/json
+
+###
+
+### Update a user by ID (replace {id} with a real UUID)
+PUT http://localhost:8080/users/{id}
+Content-Type: application/json
+
+{
+  "email": "bob_new@example.com",
+  "username": "bob_updated",
+  "isActive": true,
+  "isVerified": true,
+  "locale": "en"
+}
+
+###
+
+### Delete a user by ID (replace {id} with a real UUID)
+DELETE http://localhost:8080/users/{id}
+

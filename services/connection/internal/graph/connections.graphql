@@ -1,0 +1,44 @@
+type User {
+  userId: ID!
+  name: String
+}
+
+type Connection {
+  user: User!
+  connectedAt: String!
+}
+
+type PendingRequest {
+  fromUserId: String!
+  toUserId: String!
+}
+
+input CreateConnectionInput {
+  fromUserId: ID!
+  toUserId: ID!
+}
+
+input rejectConnectionInput {
+  fromUserId: ID!
+  toUserId: ID!
+}
+
+input AcceptConnectionInput {
+  fromUserId: ID!
+  toUserId: ID!
+}
+
+type Query {
+  connectionsOf(userId: ID!): [User!]!
+}
+
+type Query {
+  pendingConnectionRequests(userId: String!): [PendingRequest!]!
+}
+
+type Mutation {
+  sendConnectionRequest(input: CreateConnectionInput!): Boolean!
+  acceptConnection(input: AcceptConnectionInput!): Boolean!
+  rejectConnectionRequest(input: rejectConnectionInput!): Boolean!
+  followUser(fromUserId: ID!, toUserId: ID!): Boolean!
+}

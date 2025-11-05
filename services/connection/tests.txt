@@ -1,0 +1,87 @@
+# 1️⃣ Create test users
+# (Skip if users already exist)
+mutation {
+  createUser1: createUser(input: { userId: "user1", name: "Alice" })
+  createUser2: createUser(input: { userId: "user2", name: "Bob" })
+  createUser3: createUser(input: { userId: "user3", name: "Charlie" })
+  createUser4: createUser(input: { userId: "user4", name: "David" })
+}
+
+# 2️⃣ Send connection requests
+mutation {
+  req1: sendConnectionRequest(input: { fromUserId: "user1", toUserId: "user2" })
+  req2: sendConnectionRequest(input: { fromUserId: "user3", toUserId: "user2" })
+}
+
+# 3️⃣ Accept one connection request
+mutation {
+  accept1: acceptConnection(input: { fromUserId: "user1", toUserId: "user2" })
+}
+
+# 4️⃣ Follow a user
+mutation {
+  follow1: followUser(fromUserId: "user2", toUserId: "user3")
+  follow2: followUser(fromUserId: "user4", toUserId: "user2")
+}
+
+# 5️⃣ Query all connections of a user
+query {
+  user2Connections: connectionsOf(userId: "user2") {
+    userId
+    name
+  }
+  user3Connections: connectionsOf(userId: "user3") {
+    userId
+    name
+  }
+}
+
+# 6️⃣ Optional: Query pending connection requests
+query {
+  pendingRequests: pendingConnectionRequests(userId: "user2") {
+    fromUserId
+    toUserId
+  }
+}
+
+
+#Check All Users
+
+MATCH (u:User)
+RETURN u.userId AS userId, u.name AS name
+ORDER BY u.userId;
+
+# Check All Connection Requests
+
+MATCH (from:User)-[r:SENT_REQUEST]->(to:User)
+RETURN from.userId AS fromUser, to.userId AS toUser
+ORDER BY fromUser, toUser;
+
+# Check All Accepted Connections
+MATCH (u1:User)-[r:CONNECTED_WITH]-(u2:User)
+RETURN u1.userId AS user1, u2.userId AS user2
+ORDER BY user1, user2;
+
+# Check All Follows
+
+MATCH (follower:User)-[r:FOLLOWING]->(followed:User)
+RETURN follower.userId AS follower, followed.userId AS followed
+ORDER BY follower, followed;
+
+# Check Connections of a Specific User
+
+MATCH (u:User {userId:'user2'})-[:CONNECTED_WITH]-(conn:User)
+RETURN conn.userId AS connectionId, conn.name AS connectionName;
+
+# Check Pending Requests for a Specific User
+
+MATCH (from:User)-[:SENT_REQUEST]->(to:User {userId:'user2'})
+RETURN from.userId AS requesterId, from.name AS requesterName;
+
+# Count Nodes and Relationships
+
+MATCH (u:User) RETURN count(u) AS totalUsers;
+
+MATCH ()-[r:SENT_REQUEST]->() RETURN count(r) AS totalRequests;
+MATCH ()-[r:CONNECTED_WITH]-() RETURN count(r) AS totalConnections;
+MATCH ()-[r:FOLLOWING]->() RETURN count(r) AS totalFollows;

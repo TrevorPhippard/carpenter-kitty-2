@@ -22,7 +22,7 @@ All services are containerized and orchestrated via **Docker Compose**.
 ---
 
 ## 📂 Repository Structure
-
+```
 backend/
 ├── gateway/ # NestJS API Gateway
 ├── services/
@@ -38,7 +38,7 @@ backend/
 ├── docker-compose.yml
 ├── Makefile
 └── README.md
-
+```
 ---
 
 ## 🧠 Documentation
@@ -49,10 +49,10 @@ backend/
 | [**Setup Guide**](./docs/setup.md) | Local and container setup instructions |
 | [**Testing Guide**](./docs/testing.md) | How to run all tests and interpret coverage |
 | [**Architecture Deep Dive**](./docs/architecture.md) | Microservice communication, data flow, and event handling |
-
 | [**User Service README**](./services/user/README.md) | basic setup & info
 | [**Post Service README**](./services/post/README.md) | basic setup & info |
 | [**Profile Service README**](./services/profile/README.md) | basic setup & info |
+
 ---
 
 ## 🧰 Local Development

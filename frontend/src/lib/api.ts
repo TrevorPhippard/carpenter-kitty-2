@@ -1,6 +1,6 @@
 import type { ClientProfile, ContractorProfile } from '@/types/user'
 
-const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8084'
+const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
 
 async function parseRes(res: Response) {
   const text = await res.text()
@@ -81,7 +81,6 @@ export async function getSuggestions(userId: string) {
 }
 
 export async function sendInvite(userId: string) {
-  console.log(userId)
   const res = await fetch(`${BASE}/api/network/invite/${userId}`, {
     method: 'POST',
   })

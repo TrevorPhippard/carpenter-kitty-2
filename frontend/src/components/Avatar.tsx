@@ -31,13 +31,14 @@ export default function Avatar({ user, alt, size = 40 }: AvatarProps) {
     >
       {/* Standard <img> works perfectly fine in TanStack */}
       <img
-        src={user.avatarUrl || '/default-avatar.png'}
+        src={user.avatarUrl}
         alt={alt}
         width={size}
         height={size}
         className="object-cover w-full h-full"
         loading="lazy"
       />
+      <p>{user.avatarUrl}</p>
     </div>
   )
 }

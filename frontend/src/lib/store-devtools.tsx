@@ -5,8 +5,6 @@ import { fullName, store } from './store'
 
 type EventMap = {
   'store-devtools:state': {
-    firstName: string
-    lastName: string
     fullName: string
   }
 }
@@ -23,16 +21,12 @@ const sdec = new StoreDevtoolsEventClient()
 
 store.subscribe(() => {
   sdec.emit('state', {
-    firstName: store.state.firstName,
-    lastName: store.state.lastName,
     fullName: fullName.state,
   })
 })
 
 function DevtoolPanel() {
   const [state, setState] = useState<EventMap['store-devtools:state']>(() => ({
-    firstName: store.state.firstName,
-    lastName: store.state.lastName,
     fullName: fullName.state,
   }))
 
@@ -45,7 +39,7 @@ function DevtoolPanel() {
       <div className="text-sm font-bold text-gray-500 whitespace-nowrap">
         Full Name
       </div>
-      <div className="text-sm">{state?.fullName}</div>
+      <div className="text-sm">{state.fullName}</div>
     </div>
   )
 }

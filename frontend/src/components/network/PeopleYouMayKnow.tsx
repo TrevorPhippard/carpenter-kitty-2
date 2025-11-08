@@ -23,7 +23,6 @@ export function PeopleYouMayKnow() {
                 <div className="text-xs text-gray-500">{user.title}</div>
               </div>
             </div>
-            {user.id}
             <Button onClick={() => send.mutate(user.id)}>Connect</Button>
           </li>
         ))}

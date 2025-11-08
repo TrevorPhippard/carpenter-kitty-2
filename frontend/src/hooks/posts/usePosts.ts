@@ -2,22 +2,28 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import type { Post } from '@/types/post'
 import { getPosts } from '@/lib/api'
 
+interface PostResults {
+  page: number
+  limit: number
+  total: number
+  results: Array<Post>
+}
+
 export function usePosts() {
   const queryClient = useQueryClient()
 
   const {
-    data: posts = [],
+    data: posts,
     error,
     isLoading,
     isError,
     refetch,
-  } = useQuery<Array<Post>, Error>({
+  } = useQuery<PostResults, Error>({
     queryKey: ['posts'],
     queryFn: getPosts,
     staleTime: 1000 * 60, // 1 minute cache
   })
 
-  // Optionally expose a helper to manually invalidate/refetch
   function invalidatePosts() {
     queryClient.invalidateQueries({ queryKey: ['posts'] })
   }

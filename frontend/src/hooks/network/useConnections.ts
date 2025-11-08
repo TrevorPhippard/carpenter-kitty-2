@@ -35,6 +35,7 @@ export function useInvitations() {
 export function useSuggestions() {
   const { user } = useUser() // <-- get current user
   const userId = String(user?.id)
+
   return useQuery({
     queryKey: ['network', 'suggestions', userId],
     queryFn: () => getSuggestions(userId),

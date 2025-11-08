@@ -4,7 +4,6 @@ import type { ClientProfile, ContractorProfile } from '@/types/user'
 import { Route } from '@/routes/(authorized)/profile.$userId'
 import { useAuth } from '@/hooks/useAuth'
 import { fetchProfile } from '@/lib/api'
-// import { fetchProfile } from '@/lib/api'
 
 export function useProfile(): {
   profile?: any

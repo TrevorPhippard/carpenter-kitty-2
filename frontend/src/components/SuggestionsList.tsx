@@ -1,11 +1,12 @@
 import type { FullProfile } from '../types/user'
+import { suggestions } from '@/data/mockData'
 import Avatar from '@/components/Avatar'
 // import { Button } from '@/components//ui/button'
 
 export function SuggestionsList({
-  suggestions,
+  currentUser,
 }: {
-  suggestions: Array<FullProfile>
+  currentUser: Array<FullProfile>
 }) {
   return (
     <div className="bg-white rounded-lg shadow p-4 sticky top-20">

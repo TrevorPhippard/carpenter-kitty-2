@@ -1,9 +1,11 @@
+import AvatarLockUp from '../profile/AvatarLockUp'
 import {
   useAcceptInvite,
   useDeclineInvite,
   useInvitations,
 } from '@/hooks/network/useConnections'
 import { Button } from '@/components//ui/button'
+import { fullName } from '@/lib/store'
 
 export function Invitations() {
   const { data, isLoading } = useInvitations()
@@ -18,7 +20,9 @@ export function Invitations() {
       <ul className="space-y-3">
         {data?.map((invite: any) => (
           <li key={invite.id} className="flex justify-between items-center">
-            <span>{invite.sender.fullName}</span>
+            <div className="flex items-center gap-4">
+              <AvatarLockUp user={invite} />
+            </div>
             <div className="space-x-2">
               <Button onClick={() => accept.mutate(invite.id)}>Accept</Button>
               <Button onClick={() => decline.mutate(invite.id)}>Decline</Button>

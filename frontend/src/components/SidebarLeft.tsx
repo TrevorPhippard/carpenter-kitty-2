@@ -1,10 +1,10 @@
 import { UserCard } from './UserCard'
 import type { User } from '../types/user'
 
-export function SidebarLeft({ user }: { user: User }) {
+export function SidebarLeft({ currentUser }: { currentUser: User }) {
   return (
     <>
-      <UserCard user={user} />
+      <UserCard user={currentUser} />
       <div className="mt-4 hidden md:block sticky top-82">
         <div className="bg-white rounded-lg shadow p-4 ">
           <h3 className="text-sm font-semibold mb-3">Groups</h3>

@@ -13,10 +13,15 @@ export function Feed({ currentUser }: { currentUser?: ProfileWith }) {
   if (error) {
     return <div className="text-red-600">Error loading posts: {error}</div>
   }
+
+  if (!posts?.results.length) {
+    return <div className="text-gray-500">No posts available</div>
+  }
+
   return (
     <>
       {currentUser && <CreatePostBox user={currentUser} />}
-      {posts.map((post) => (
+      {posts.results.map((post) => (
         <PostCard
           key={post.id}
           post={post}

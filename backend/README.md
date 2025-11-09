@@ -11,7 +11,7 @@ Each service is independently deployable, communicates through **HTTP**, **gRPC*
 | Layer | Technology | Description |
 |--------|-------------|--------------|
 | **API Gateway** | NestJS | Routes frontend requests to microservices (REST + TCP). |
-| **Connections Service** | NestJS (TCP) | Handles social graph (follows, connections, etc.). |
+| **Connections Service** | NestJS (gRPC) | Handles social graph (follows, connections, etc.). |
 | **User Service** | Go + Postgres | Authentication and user management. |
 | **Post Service** | Go + MongoDB | User posts, comments, and related content. |
 | **Profile Service** | Go + Postgres | User bios, avatars, and profile management. |

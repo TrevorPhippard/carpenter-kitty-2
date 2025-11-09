@@ -1,0 +1,13 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type ReturnTime {
+  user_service: String
+  post_service: String
+  connection_service: String
+}
+
+type Query {
+  ReturnTime: ReturnTime
+}

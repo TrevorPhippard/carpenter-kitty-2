@@ -55,7 +55,7 @@ services:
       connections-db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:${CONNECTIONS_SERVICE_PORT}/health || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://0.0.0.0:${CONNECTIONS_SERVICE_PORT}/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5

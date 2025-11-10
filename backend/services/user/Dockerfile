@@ -1,33 +1,44 @@
-# Stage 1: Build
-FROM golang:1.25.3 AS builder
+# =========================
+# 1. Build stage
+# =========================
+FROM golang:1.25.3-alpine AS builder
 
-# Set working directory inside container
+# Install build tools
+RUN apk add --no-cache git bash
+
 WORKDIR /app
 
-# Copy Go module files
+# Copy Go modules and download dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy service source code
-COPY . .
+# Copy source code and pre-generated proto files
+COPY proto/ ./proto/
+COPY cmd/ ./cmd/
+COPY internal/ ./internal/
 
-# Build the Go binary (cmd/main.go is entrypoint)
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main ./cmd
+# Build the binary
+RUN go build -ldflags="-s -w" -o user-server cmd/server/main.go
 
-# Stage 2: Runtime
-FROM debian:bookworm-slim
+# =========================
+# 2. Minimal production image
+# =========================
+FROM scratch
 
 WORKDIR /app
 
-# Add a non-root user
-RUN useradd -m appuser
-USER appuser
+# Copy CA certificates for TLS support
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-# Copy built binary from builder stage
-COPY --from=builder /app/main .
+# Copy the compiled binary
+COPY --from=builder /app/user-server .
 
-# Expose port
-EXPOSE 8080
+# Expose gRPC port
+EXPOSE 50052
 
-# Run the service
-CMD ["./main"]
+# Environment variables
+ENV USER_DB_URI="mongodb://mongo:27017"
+ENV USER_DB_NAME="users"
+
+# Run server
+CMD ["./user-server"]

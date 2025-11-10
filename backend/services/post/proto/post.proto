@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package post;
+
+option go_package = "post/proto;post";
+
+// Nested message for media attached to a post
+message PostMedia {
+  string id = 1;
+  string media_url = 2;
+  string mime_type = 3;
+  int32 order = 4;
+}
+
+// Main Post message
+message Post {
+  string id = 1;
+  string author_id = 2;
+  string text = 3;
+  string visibility = 4; // PUBLIC, CONNECTIONS, PRIVATE
+  repeated PostMedia media = 5;
+  int64 created_at = 6; // Unix timestamp
+  int64 updated_at = 7; // Unix timestamp
+  int32 comment_count = 8;
+  int32 like_count = 9;
+  int32 share_count = 10;
+}
+
+// For identifying a post by ID
+message PostId {
+  string id = 1;
+}
+
+// For listing multiple posts
+message PostList {
+  repeated Post posts = 1;
+}
+
+// Empty message for ListPosts
+message Empty {}
+
+// gRPC service definition
+service PostService {
+  rpc CreatePost(Post) returns (Post);
+  rpc GetPost(PostId) returns (Post);
+  rpc UpdatePost(Post) returns (Post);
+  rpc DeletePost(PostId) returns (PostId);
+  rpc ListPosts(Empty) returns (PostList);
+}

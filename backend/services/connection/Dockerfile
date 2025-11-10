@@ -1,33 +1,38 @@
+# ----------------------
 # Stage 1: Build
-FROM golang:1.25.3 AS builder
+# ----------------------
+FROM golang:1.25.3-alpine AS builder
 
-# Set working directory inside container
+# Install git (needed if your modules use git) and ca-certificates
+RUN apk add --no-cache git ca-certificates
+
 WORKDIR /app
 
-# Copy Go module files
+# Copy go.mod and go.sum first for caching
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy service source code
+# Copy the rest of the source code
 COPY . .
 
-# Build the Go binary (cmd/main.go is entrypoint)
+# Build the Go binary (assumes main.go is in ./cmd)
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main ./cmd
 
+# ----------------------
 # Stage 2: Runtime
-FROM debian:bookworm-slim
+# ----------------------
+FROM alpine:latest
 
-WORKDIR /app
+# Install ca-certificates for HTTPS requests if needed
+RUN apk add --no-cache ca-certificates
 
-# Add a non-root user
-RUN useradd -m appuser
-USER appuser
+WORKDIR /root/
 
-# Copy built binary from builder stage
+# Copy the binary from the builder stage
 COPY --from=builder /app/main .
 
-# Expose port
-EXPOSE 8080
+# Expose the gRPC port (example)
+EXPOSE 50051
 
-# Run the service
+# Run the binary
 CMD ["./main"]

@@ -2,21 +2,16 @@ syntax = "proto3";
 
 package gateway;
 
-// 👇 This is the correct go_package line
 option go_package = "gateway/service;gateway";
 
-// The service definition
-service Greeter {
-  // A unary RPC.
-  rpc SayHello (HelloRequest) returns (HelloResponse);
+// This service mirrors UserService for gateway use.
+// We provide a simple Ping RPC so GraphQL can test connectivity.
+service UserService {
+  rpc Ping (PingRequest) returns (PingResponse);
 }
 
-// The request message containing the user's name.
-message HelloRequest {
-  string name = 1;
-}
+message PingRequest {}
 
-// The response message containing the greeting.
-message HelloResponse {
+message PingResponse {
   string message = 1;
 }

@@ -21,28 +21,26 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// The request message containing the user's name.
-type HelloRequest struct {
+type PingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *HelloRequest) Reset() {
-	*x = HelloRequest{}
+func (x *PingRequest) Reset() {
+	*x = PingRequest{}
 	mi := &file_service_schema_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *HelloRequest) String() string {
+func (x *PingRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*HelloRequest) ProtoMessage() {}
+func (*PingRequest) ProtoMessage() {}
 
-func (x *HelloRequest) ProtoReflect() protoreflect.Message {
+func (x *PingRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_service_schema_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -54,40 +52,32 @@ func (x *HelloRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use HelloRequest.ProtoReflect.Descriptor instead.
-func (*HelloRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use PingRequest.ProtoReflect.Descriptor instead.
+func (*PingRequest) Descriptor() ([]byte, []int) {
 	return file_service_schema_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *HelloRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-// The response message containing the greeting.
-type HelloResponse struct {
+type PingResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *HelloResponse) Reset() {
-	*x = HelloResponse{}
+func (x *PingResponse) Reset() {
+	*x = PingResponse{}
 	mi := &file_service_schema_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *HelloResponse) String() string {
+func (x *PingResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*HelloResponse) ProtoMessage() {}
+func (*PingResponse) ProtoMessage() {}
 
-func (x *HelloResponse) ProtoReflect() protoreflect.Message {
+func (x *PingResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_service_schema_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -99,12 +89,12 @@ func (x *HelloResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use HelloResponse.ProtoReflect.Descriptor instead.
-func (*HelloResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use PingResponse.ProtoReflect.Descriptor instead.
+func (*PingResponse) Descriptor() ([]byte, []int) {
 	return file_service_schema_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *HelloResponse) GetMessage() string {
+func (x *PingResponse) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
@@ -115,13 +105,12 @@ var File_service_schema_proto protoreflect.FileDescriptor
 
 const file_service_schema_proto_rawDesc = "" +
 	"\n" +
-	"\x14service/schema.proto\x12\agateway\"\"\n" +
-	"\fHelloRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\")\n" +
-	"\rHelloResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2D\n" +
-	"\aGreeter\x129\n" +
-	"\bSayHello\x12\x15.gateway.HelloRequest\x1a\x16.gateway.HelloResponseB\x19Z\x17gateway/service;gatewayb\x06proto3"
+	"\x14service/schema.proto\x12\agateway\"\r\n" +
+	"\vPingRequest\"(\n" +
+	"\fPingResponse\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage2B\n" +
+	"\vUserService\x123\n" +
+	"\x04Ping\x12\x14.gateway.PingRequest\x1a\x15.gateway.PingResponseB\x19Z\x17gateway/service;gatewayb\x06proto3"
 
 var (
 	file_service_schema_proto_rawDescOnce sync.Once
@@ -137,12 +126,12 @@ func file_service_schema_proto_rawDescGZIP() []byte {
 
 var file_service_schema_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_service_schema_proto_goTypes = []any{
-	(*HelloRequest)(nil),  // 0: gateway.HelloRequest
-	(*HelloResponse)(nil), // 1: gateway.HelloResponse
+	(*PingRequest)(nil),  // 0: gateway.PingRequest
+	(*PingResponse)(nil), // 1: gateway.PingResponse
 }
 var file_service_schema_proto_depIdxs = []int32{
-	0, // 0: gateway.Greeter.SayHello:input_type -> gateway.HelloRequest
-	1, // 1: gateway.Greeter.SayHello:output_type -> gateway.HelloResponse
+	0, // 0: gateway.UserService.Ping:input_type -> gateway.PingRequest
+	1, // 1: gateway.UserService.Ping:output_type -> gateway.PingResponse
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

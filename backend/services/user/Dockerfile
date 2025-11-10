@@ -1,44 +1,46 @@
-# =========================
-# 1. Build stage
-# =========================
+# ================================
+# Build stage
+# ================================
 FROM golang:1.25.3-alpine AS builder
 
-# Install build tools
-RUN apk add --no-cache git bash
+# Install git for Go modules
+RUN apk add --no-cache git
 
+# Set working directory
 WORKDIR /app
 
-# Copy Go modules and download dependencies
+# Copy go.mod and go.sum and download dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy source code and pre-generated proto files
-COPY proto/ ./proto/
-COPY cmd/ ./cmd/
-COPY internal/ ./internal/
+# Copy the rest of the source code
+COPY . .
 
-# Build the binary
-RUN go build -ldflags="-s -w" -o user-server cmd/server/main.go
+# Build the Go binary
+RUN go build -o user-service ./cmd/server/main.go
 
-# =========================
-# 2. Minimal production image
-# =========================
-FROM scratch
+# ================================
+# Final stage
+# ================================
+FROM alpine:3.18
+
+# Install CA certificates for gRPC / TLS and curl for healthcheck
+RUN apk add --no-cache ca-certificates curl
 
 WORKDIR /app
 
-# Copy CA certificates for TLS support
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+# Copy the compiled binary from builder
+COPY --from=builder /app/user-service .
 
-# Copy the compiled binary
-COPY --from=builder /app/user-server .
+# Download grpc_health_probe for Docker healthchecks
+ADD https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.20/grpc_health_probe-linux-amd64 /bin/grpc_health_probe
+RUN chmod +x /bin/grpc_health_probe
 
-# Expose gRPC port
-EXPOSE 50052
+# Expose the gRPC port
+EXPOSE 50051
 
-# Environment variables
-ENV USER_DB_URI="mongodb://mongo:27017"
-ENV USER_DB_NAME="users"
+# Set default environment variable (can be overridden by docker-compose)
+ENV PORT=50051
 
-# Run server
-CMD ["./user-server"]
+# Run the service
+CMD ["./user-service"]

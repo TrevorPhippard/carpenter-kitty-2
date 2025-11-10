@@ -1,44 +1,43 @@
-# =========================
-# 1. Build stage
-# =========================
+# ================================
+# Build stage
+# ================================
 FROM golang:1.25.3-alpine AS builder
 
-# Install basic build tools
-RUN apk add --no-cache git bash
+# Install git for Go modules
+RUN apk add --no-cache git
 
+# Set working directory
 WORKDIR /app
 
-# Copy go.mod/go.sum and download dependencies
+# Copy go.mod and go.sum and download dependencies
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy source code and pre-generated proto files
-COPY proto/ ./proto/
-COPY cmd/ ./cmd/
-COPY internal/ ./internal/
+# Copy the rest of the source code
+COPY . .
 
-# Build the binary (strip debug info)
-RUN go build -ldflags="-s -w" -o posts-server cmd/server/main.go
+# Build the Go binary
+RUN go build -o post-service ./cmd/server/main.go
 
-# =========================
-# 2. Final minimal image
-# =========================
-FROM scratch
+# ================================
+# Final stage
+# ================================
+FROM alpine:3.18
+
+# Install CA certificates for gRPC / TLS and curl for healthcheck
+RUN apk add --no-cache ca-certificates curl
 
 WORKDIR /app
 
-# Copy CA certificates for TLS support
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+# Copy the compiled binary from builder
+COPY --from=builder /app/post-service .
 
-# Copy the compiled binary
-COPY --from=builder /app/posts-server .
+# Download grpc_health_probe for Docker healthchecks
+ADD https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.20/grpc_health_probe-linux-amd64 /bin/grpc_health_probe
+RUN chmod +x /bin/grpc_health_probe
 
-# Expose gRPC port
-EXPOSE 50051
+# Expose the gRPC port (change if different)
+EXPOSE 50052
 
-# Environment variables
-ENV POST_DB_URI="mongodb://mongo:27017"
-ENV POST_DB_NAME="posts"
-
-# Run server
-CMD ["./posts-server"]
+# Run the service
+CMD ["./post-service"]

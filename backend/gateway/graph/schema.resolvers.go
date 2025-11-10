@@ -25,19 +25,19 @@ func (r *queryResolver) ReturnTime(ctx context.Context) (*model.ReturnTime, erro
 
 // UserService is the resolver for the user_service field.
 func (r *returnTimeResolver) UserService(ctx context.Context, obj *model.ReturnTime) (*string, error) {
-	str1 := utility.ClientConn(":50051", "user_service")
+	str1 := utility.ClientConn("user-service:50051")
 	return &str1, nil
 }
 
 // PostService is the resolver for the post_service field.
 func (r *returnTimeResolver) PostService(ctx context.Context, obj *model.ReturnTime) (*string, error) {
-	str2 := utility.ClientConn(":50052", "post_service")
+	str2 := utility.ClientConn("post-service:50052")
 	return &str2, nil
 }
 
 // ConnectionService is the resolver for the connection_service field.
 func (r *returnTimeResolver) ConnectionService(ctx context.Context, obj *model.ReturnTime) (*string, error) {
-	str3 := utility.ClientConn(":50053", "connection_service")
+	str3 := utility.ClientConn("connection-service:50053")
 	return &str3, nil
 }
 

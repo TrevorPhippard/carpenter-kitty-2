@@ -9,27 +9,28 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-func ClientConn(addr string, name string) string {
+func ClientConn(addr string) string {
 	conn, err := grpc.Dial(
 		addr,
-		grpc.WithTransportCredentials(insecure.NewCredentials()), // ✅ call it
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithBlock(), // wait for connection
 	)
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		log.Printf("failed to dial: %v", err)
+		return "failed to connect"
 	}
 	defer conn.Close()
-	c := NewGreeterClient(conn)
+
+	client := NewUserServiceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	r, err := c.SayHello(ctx, &HelloRequest{
-		Name: name,
-	})
-
+	resp, err := client.Ping(ctx, &PingRequest{})
 	if err != nil {
-		log.Printf("could not greet: %v\n", err)
+		log.Printf("Ping error: %v\n", err)
+		return "ping failed"
 	}
 
-	return r.GetMessage()
+	return resp.Message
 }

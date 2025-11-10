@@ -10,10 +10,8 @@ import (
 	"gorm.io/gorm"
 )
 
-// DB is the global database connection (optional, you can still use it)
 var DB *gorm.DB
 
-// ConnectDatabase connects to PostgreSQL and returns the DB instance
 func ConnectDatabase() *gorm.DB {
 	host := os.Getenv("POSTGRES_HOST")
 	port := os.Getenv("POSTGRES_PORT")

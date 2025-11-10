@@ -15,7 +15,7 @@ build:
 	GOARCH=amd64 GOOS=linux go build -o $(BINARY_NAME)_Linux_amd64 server. go
 
 run:
-	go run ./server.go
+	go run ./cmd/main.go
 
 clean:
 	go clean

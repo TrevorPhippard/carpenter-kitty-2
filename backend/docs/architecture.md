@@ -6,7 +6,7 @@
 │  ├─ social.proto
 │  └─ user.proto
 ├─ services/
-│  ├─ user/               # go module
+│  ├─ user/
 │  │  ├─ cmd/
 │  │  │  └─ user/main.go
 │  │  ├─ internal/
@@ -17,8 +17,8 @@
 │  │  └─ tests/
 │  ├─ posts/
 │  ├─ notifications/
-│  └─ social-graph/       # nestjs/graphql service (typescript)
-├─ gateway/               # nestjs API gateway (typescript)
+│  └─ social-graph/
+├─ gateway/
 ├─ infra/
 │  ├─ docker-compose.yml
 │  └─ dev.env

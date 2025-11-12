@@ -10,8 +10,8 @@ Each service is independently deployable, communicates through **HTTP**, **gRPC*
 
 | Layer | Technology | Description |
 |--------|-------------|--------------|
-| **API Gateway** | NestJS | Routes frontend requests to microservices (REST + TCP). |
-| **Connections Service** | NestJS (gRPC) | Handles social graph (follows, connections, etc.). |
+| **API Gateway** | Go | Routes frontend requests to microservices (GraphQL + TCP). |
+| **Connections Service** |  (gRPC) | Handles social graph (follows, connections, etc.). |
 | **User Service** | Go + Postgres | Authentication and user management. |
 | **Post Service** | Go + MongoDB | User posts, comments, and related content. |
 | **Profile Service** | Go + Postgres | User bios, avatars, and profile management. |
@@ -22,11 +22,12 @@ All services are containerized and orchestrated via **Docker Compose**.
 ---
 
 ## 📂 Repository Structure
+
 ```
 backend/
-├── gateway/ # NestJS API Gateway
+├── gateway/ # Go API Gateway
 ├── services/
-│ ├── connections/ # NestJS microservice
+│ ├── connections/ # Go microservice
 │ ├── user/ # Go microservice (Postgres)
 │ ├── post/ # Go microservice (Mongo)
 │ └── profile/ # Go microservice (Postgres)
@@ -39,6 +40,7 @@ backend/
 ├── Makefile
 └── README.md
 ```
+
 ---
 
 ## 🧠 Documentation

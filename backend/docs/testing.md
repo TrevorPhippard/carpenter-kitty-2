@@ -11,6 +11,5 @@
 - Go: go test, testing, testify (assertions and mocks), gomock or mockery.
 - gRPC: google.golang.org/grpc, bufconn for in-memory tests.
 - DB integration: use Docker Compose DBs or testcontainers-go.
-- NestJS: Jest, supertest, @nestjs/testing, apollo-server-testing for GraphQL.
 - CI: GitHub Actions to run test stages.
 - Lint: golangci-lint, eslint for TS.

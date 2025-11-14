@@ -1,7 +1,5 @@
 ![carpenter-kitty_logo](https://github.com/TrevorPhippard/carpenter-kitty/blob/CK-MS-Documentation/backend/docs/ck-logo-type.png)
 
-# Carpenter Kitty
-
 ## 🚀 Overview
 
 **Carpenter Kitty** is a professional networking platform tailored for blue-collar and trades professionals, providing a LinkedIn-like experience for a hands-on workforce. The platform enables users to:

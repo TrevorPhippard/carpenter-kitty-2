@@ -1,26 +1,27 @@
+![Xigadee](/docs/ck-logo-type.png)
+
 # Carpenter Kitty
 
 ## 🚀 Overview
 
-**Carpenter Kitty** is a full-featured professional networking platform, designed to be a more blue collared version LinkedIn. It allows professionals to:
+**Carpenter Kitty** is a professional networking platform tailored for blue-collar and trades professionals, providing a LinkedIn-like experience for a hands-on workforce. The platform enables users to:
 
-- Build and manage profiles
-- Connect with other professionals
-- Connect freelancers to contractors
-- Connect both potential clients
-- Post updates and share articles, recent projects, etc
+- Create and manage detailed profiles
+- Connect with peers, freelancers, and contractors
+- Engage with potential clients
+- Share updates, projects, and articles
 - Search and apply for jobs
 - Chat in real-time
-- Receive instant notifications
-- Leave reviews
+- Receive notifications instantly
+- Leave and read reviews
 
-The project is **modular, scalable, and eventually microservices-based**, built to demonstrate a production-ready architecture.
+The project is **modular, scalable, and designed with a microservices architecture in mind**, serving as a demonstration of production-ready engineering practices.
 
 ---
 
-## 🎨 Dashboard So far
+## 🎨 Dashboard Preview
 
-> probably won't have a live link for awhile so here's a peak.
+> Live demo not available yet, but here’s a visual preview:
 
 **Feed Page**
 ![Feed GIF](https://)
@@ -37,17 +38,17 @@ The project is **modular, scalable, and eventually microservices-based**, built 
 
 ### User Features
 
-- ❌ Signup/Login with JWT
-- ❌ Edit profile, add experience, education, skills
-- ❌ Connect, follow companies, endorse skills
-- ❌ Post updates, like, comment, share
-- ❌ Job search, save, and apply
-- ❌ Activity notifications
+- ✅ Sign up / log in with JWT authentication
+- ✅ Edit profile, add experience, education, and skills
+- ✅ Connect with others, follow companies, endorse skills
+- ✅ Post updates, like, comment, and share content
+- ✅ Search, save, and apply for jobs
+- ✅ Receive activity notifications
 
 ### Admin Features (eventually)
 
 - ⚡ Manage users (suspend, ban)
-- ⚡ Moderate content (flag posts/comments)
+- ⚡ Moderate content (flag posts and comments
 - ⚡ Analytics dashboard for engagement
 
 ---
@@ -56,31 +57,36 @@ The project is **modular, scalable, and eventually microservices-based**, built 
 
 ### Frontend
 
-Tannerverse + React
+- **Framework:** React + Tanstack
+- **State Management:** Tanstack Store
+- **Testing:** Vitest / Jest
 
 ### Backend / API
 
-Go services that communicate through a shared API gateway, planning for federated graphQL
-I'll probably learn swagger at some point
+- **Language:** Go (Golang) 1.25+
+- **Architecture:** Micro-services with HTTP/gRPC communication via an API gateway
+- **Datastores:** PostgreSQL / MongoDB / Neo4j (per-service)
 
-### Realtime & Messaging
+### Real-time & Messaging
 
-WIP
+- WebSockets / gRPC-Web (WIP)
 
 ### Search & Queue
 
-Elasticsearch & Kafka would be nice
+- Elasticsearch & Kafka (planned)
 
 ### DevOps
 
-Docker with plans of local version of mini-kube  or Kind
+- Docker & Docker Compose
+- Kubernetes-ready (MiniKube or Kind for local testing)
 
 ---
 
 ## ⚡ Getting Started
 
 ##### Prerequisites
-- Go 1.22+
+
+- Go 1.25+
 - Node.js 20+
 - Docker & Docker Compose
 - Make (optional but recommended)
@@ -104,14 +110,14 @@ cd frontend
 npm run dev
 ```
 
-#### Services will be available at:
+#### Services will be available at
 
-Gateway: http://localhost:8080
-Frontend: http://localhost:5173
+Gateway: <http://localhost:8080>
+Frontend: <http://localhost:5173>
 
 ---
 
-## 🗂 Folder Structure
+## 🗂 Project Structure
 
 ```
 Carpenter-Kitty-Microservice/
@@ -149,92 +155,96 @@ Carpenter-Kitty-Microservice/
 ## 🏗 Architecture
 
 **Description:**
+Test driven, observability first, well-defined contracts.
 
 #### Backend
-The backend is built using Go (Golang) and structured as loosely coupled microservices. Each service runs independently and communicates over HTTP or gRPC through an API gateway.
 
-##### Key characteristics:
-- Language: Go 1.22+
-- Frameworks: Standard Go HTTP/gRPC
-- Data Stores: PostgreSQL / MongoDB / Neo4j (per-service)
-- Orchestration: Docker Compose for local; Kubernetes-ready
-- Gateway: Handles routing, request validation, and load balancing
-- Configuration: .env per service with environment variable overrides
+- **Pattern:** Loosely coupled microservices
+- **Communication:** HTTP / gRPC via API Gateway
+- **Orchestration:** Docker Compose (local), Kubernetes ready
+- **Configuration:** Environment variables per service
 
-#### Frontend
+### Frontend
 
-Framework: React / TanstackStart
-Communication: REST / gRPC-Web via gateway
-State Management: Tanstack Store
-Testing: Vitest / Jest
+- **Framework:** React + Tanstack
+- **Communication:** REST / gRPC-Web via API Gateway
+- **State Management:** Tanstack Store
+- **Testing:** Vitest / Jest
 
 ## 🧪 Testing Strategy
+
 Testing is designed to be modular, automated, and CI-ready.
 
-#### Backend (Go)
+### Backend (Go)
 
-**Unit Tests:** Use Go’s built-in testing package with table-driven tests.
-Integration Tests: Use Docker Compose to spin up dependencies (databases, message brokers) and run go test
-**Contract Tests:** For API/gRPC interfaces between services.
-**Mocking:** not sure, usually use faker.js, will have to find what to use in golang
+- **Unit Tests:** Table-driven tests using Go’s testing package
+- **Integration Tests:** Spin up dependencies with Docker Compose
+- **Contract Tests:** Verify API / gRPC interfaces
+- **Mocking:** To be determined (likely using Go test doubles)
 
-#### Frontend
+### Frontend
 
-**Unit + Component Tests:** Via Jest
-**E2E Tests:** Playwright 
+- **Unit & Component Tests:** Jest / Vitest
+- **End-to-End Tests:** Playwright
 
-All tests can be run locally or in CI with a single command:
-make test  or docker compose run --rm backend make test
+Run all tests locally or in CI:
 
+```
+make test
+# or
+docker-compose run --rm backend make test
+```
 
 ## 📦 Deployment
 
-The system supports both Docker Compose (local) and Kubernetes (production) deployments.
-Docker Compose
-Each service is containerized and configured in backend/docker-compose.yml.
-Kubernetes (Optional)
-Helm charts or manifests can be added per service under /deploy/k8s/.
-CI/CD can push to:
-GitHub Container Registry
+- **Docker Compose (Local):** Each service containerized and defined in `backend/docker-compose.yml`
+
+- **Kubernetes (Production-ready):** Helm charts or manifests under `/deploy/k8s/`
+
+- **CI/CD:** GitHub Actions can build, test, and push containers to a registry
 
 ## 📈 Observability
 
-To enable production-grade reliability:
+- **Logging:** Structured JSON logs
 
-**Logging:** Structured JSON logs (haven't researched too much)
-**Metrics:** Prometheus metrics via /metrics endpoints.
-**Tracing:** OpenTelemetry integrated across services.
-**Dashboards:** Grafana (seems like the go to, haven't researched too much)
+- **Metrics:** Prometheus endpoints (`/metrics`)
 
+- **Tracing:** OpenTelemetry integration
+
+- **Dashboards:** Grafana (planned)
 
 ## 🔐 Security
 
-- Self rolled JWT-based authentication (meantime, not production), until better-auth provides better documentation. 
+- JWT-based authentication (temporary implementation)
 - Rate limiting and CORS rules
-- Secrets managed via .env or environment variables
-- Minimal privileges for each container
+- Secrets managed via environment variables
+- Principle of least privilege applied per container
 
 ## 🚀 CI/CD Pipeline
 
 **workflow:** GitHub Actions
-**Build & Test:** Run go test and frontend unit tests on each PR.
-**Deploy:** On main merge, push containers and trigger rollout. 
 
 Example pipeline steps:
 
+```
 - name: Build backend
   run: go build ./...
 - name: Run tests
   run: go test ./... -v
+```
+
+- Build and test on every PR
+- Deploy containers on merge to main
 
 ## 🧰 Developer Notes
- These are just dreams 
+
+ Future improvements and feature expansions documented here
 
 ---
 
 ## 🤝 Contributing
 
-1. don't
+1. Contributions are currently not accepted
 
 ---
 

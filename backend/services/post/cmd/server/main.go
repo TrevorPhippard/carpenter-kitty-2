@@ -5,9 +5,9 @@ import (
 	"net"
 	"post/internal/config"
 	"post/internal/handler"
-	pb "post/internal/post/proto"
 	"post/internal/repository"
 	"post/internal/service"
+	pb "post/proto"
 
 	"google.golang.org/grpc"
 )

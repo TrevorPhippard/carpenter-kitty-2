@@ -1,6 +1,13 @@
 import type { ClientProfile, ContractorProfile } from '@/types/user'
 
+import { makePostsWithComments, makePostsWithUsers } from '@/data/postFactory'
+
+const mockPosts = [...makePostsWithUsers(10), ...makePostsWithComments(5)].sort(
+  () => Math.random() - 0.5,
+)
+
 const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:4000'
+const devBackend = import.meta.env.VITE_DEV
 
 async function parseRes(res: Response) {
   const text = await res.text()
@@ -14,6 +21,8 @@ async function parseRes(res: Response) {
 // POSTS
 
 export async function getPosts() {
+  if (devBackend) return mockPosts
+
   const res = await fetch(`${BASE}/api/posts`)
   if (!res.ok) throw new Error((await parseRes(res)) || 'Failed to fetch posts')
   return res.json()
@@ -26,6 +35,8 @@ export async function addComment(
     content: string
   },
 ) {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/posts/${postId}/comments`, {
     method: 'POST',
     headers: {
@@ -43,6 +54,8 @@ export async function createPost(payload: {
   content?: string
   media?: Array<string>
 }) {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/posts`, {
     method: 'POST',
     headers: {
@@ -55,6 +68,8 @@ export async function createPost(payload: {
 }
 
 export async function getCurrentUser() {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/me`)
   if (!res.ok) throw new Error('Failed to fetch current user')
   return res.json()
@@ -63,24 +78,32 @@ export async function getCurrentUser() {
 // NETWORK
 
 export async function getConnections(userId: string) {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/network/connections/${userId}`)
   if (!res.ok) throw new Error(await parseRes(res))
   return res.json()
 }
 
 export async function getInvitations(userId: string) {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/network/invitations/${userId}`)
   if (!res.ok) throw new Error(await parseRes(res))
   return res.json()
 }
 
 export async function getSuggestions(userId: string) {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/network/suggestions/${userId}`)
   if (!res.ok) throw new Error(await parseRes(res))
   return res.json()
 }
 
 export async function sendInvite(userId: string) {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/network/invite/${userId}`, {
     method: 'POST',
   })
@@ -89,6 +112,8 @@ export async function sendInvite(userId: string) {
 }
 
 export async function acceptInvite(inviteId: string) {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/network/accept/${inviteId}`, {
     method: 'POST',
   })
@@ -97,6 +122,8 @@ export async function acceptInvite(inviteId: string) {
 }
 
 export async function declineInvite(inviteId: string) {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/network/decline/${inviteId}`, {
     method: 'POST',
   })
@@ -105,6 +132,8 @@ export async function declineInvite(inviteId: string) {
 }
 
 export async function fetchProfile(username: string) {
+  if (devBackend) return {}
+
   const res = await fetch(`${BASE}/api/profiles/${username}`)
   if (!res.ok) throw new Error('Failed to fetch profile')
   return res.json()

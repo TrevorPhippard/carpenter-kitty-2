@@ -71,31 +71,6 @@ services:
   # ================================
   # API Gateway
   # ================================
-  gateway:
-    build:
-      context: ./gateway
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"   # GraphQL playground accessible on localhost
-    environment:
-      USER_SERVICE_HOST: localhost
-      USER_SERVICE_PORT: 50051
-      POST_SERVICE_HOST: localhost
-      POST_SERVICE_PORT: 50052
-      CONNECTIONS_HOST: localhost
-      CONNECTIONS_PORT: 50053
-    networks:
-      - backend
-      - frontend
-    depends_on:
-      - user-service
-      - post-service
-      - connections-service
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   # ================================
   # Databases

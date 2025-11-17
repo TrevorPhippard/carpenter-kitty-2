@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"post/internal/models"
-	pb "post/internal/post/proto"
 	"post/internal/service"
+	pb "post/proto"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )

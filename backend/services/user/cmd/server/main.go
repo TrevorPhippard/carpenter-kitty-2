@@ -4,20 +4,42 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 	"user/internal/config"
+	"user/internal/consul"
 	"user/internal/db"
 	"user/internal/handler"
 	"user/internal/repository"
 	"user/internal/service"
 	"user/internal/user/proto"
 
+	"github.com/hashicorp/consul/api"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 )
 
 func main() {
+
+	addr := os.Getenv("CONSUL_HTTP_ADDR")
+	agent := consul.NewAgent(&api.Config{Address: addr})
+
+	serviceCfg := consul.Config{
+		ServiceID:   "user-service-1",
+		ServiceName: "user-service",
+		Address:     "user-service",
+		Port:        50051,
+		Tags:        []string{"user"},
+		TTL:         8 * time.Second,
+		CheckID:     "check_health",
+	}
+
+	agent.RegisterService(serviceCfg)
+	http.Handle("/metrics", promhttp.Handler())
+
 	userdb := config.ConnectDatabase()
 
 	// fill db

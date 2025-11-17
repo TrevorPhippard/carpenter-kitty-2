@@ -3,16 +3,39 @@ package main
 import (
 	"log"
 	"net"
+	"net/http"
+	"os"
 	"post/internal/config"
+	"post/internal/consul"
 	"post/internal/handler"
 	"post/internal/repository"
 	"post/internal/service"
 	pb "post/proto"
+	"time"
 
+	"github.com/hashicorp/consul/api"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 )
 
 func main() {
+
+	addr := os.Getenv("CONSUL_HTTP_ADDR")
+	agent := consul.NewAgent(&api.Config{Address: addr})
+
+	serviceCfg := consul.Config{
+		ServiceID:   "post-service-1",
+		ServiceName: "post-service",
+		Address:     "post-service",
+		Port:        50052,
+		Tags:        []string{"post"},
+		TTL:         8 * time.Second,
+		CheckID:     "check_health",
+	}
+
+	agent.RegisterService(serviceCfg)
+	http.Handle("/metrics", promhttp.Handler())
+
 	// Initialize MongoDB and get the database instance
 	db := config.Init()
 

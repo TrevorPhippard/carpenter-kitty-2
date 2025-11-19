@@ -12,20 +12,14 @@ requirements: 5mins
 
  - functional requirements
 		security
-
-		realiblity
-			sacle to 100+ million users
-			handle high volume
 		performacnce
 				-high avalilablity 99.999%
 				- low latency
-
 
 	security
 		auth(2)
 		data encryption
 				transit + at rest
-		rate limiting
 		input validation
 
 	monitoring
@@ -41,11 +35,8 @@ requirements: 5mins
 		- backups/recovery
 
 clients
-	-> load balancer
-					routing algorithm (there are a few)
-					layer, tcp or https
-
 	-> api gateway
+      gateway  health_checks
 
 
 key services
@@ -59,7 +50,6 @@ key services
 		mongodb
 
 	comments: crud service
-		ratelimiter
 		redis
 
 	search
@@ -71,10 +61,15 @@ key services
 	timeline/feed
 			- fanout-on-read: message queue.
 
-	profile service
 
-		- sql database: postgres
 
-	connections: graph database
 
-	auth
+
+Use dynamic service discovery instead of static addresses
+  Currently, Envoy cannot find new instances automatically if you scale your services.
+  Options:
+    * EDS (xDS) from Consul
+    * Consul template / Sidecar updating Envoy config
+
+For now, you can keep static addresses in small setups, but note it’s not scalable.
+Optional: restrict domains in virtual host instead of * to reduce attack surface.

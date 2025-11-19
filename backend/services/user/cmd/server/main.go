@@ -33,7 +33,7 @@ func main() {
 		Address:     "user-service",
 		Port:        50051,
 		Tags:        []string{"user"},
-		TTL:         8 * time.Second,
+		TTL:         30 * time.Second,
 		CheckID:     "check_health",
 	}
 
@@ -65,6 +65,13 @@ func main() {
 		fmt.Println("gRPC server running on :50051")
 		if err := grpcServer.Serve(listener); err != nil {
 			log.Fatalf("Failed to serve: %v", err)
+		}
+	}()
+
+	go func() {
+		fmt.Println("Metrics server running on :9090")
+		if err := http.ListenAndServe(":9090", nil); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Metrics server failed: %v", err)
 		}
 	}()
 

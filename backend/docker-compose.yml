@@ -208,6 +208,60 @@ services:
     depends_on:
       - user-db
 
+  # ================================
+  # Cache (Optional)
+  # ================================
+  # cache:
+  #   image: redis:7-alpine
+  #   container_name: redis-cache
+
+  #   networks:
+  #     - backend
+  #   expose:
+  #     - "6379"
+  #   healthcheck:
+  #     test: ["CMD", "redis-cli", "ping"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+
+  # ================================
+  # Monitoring & Logging
+  # ================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - backend
+
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   container_name: grafana
+  #   ports:
+  #     - "3001:3000"
+  #   environment:
+  #     GF_SECURITY_ADMIN_USER: admin
+  #     GF_SECURITY_ADMIN_PASSWORD: admin
+  #   depends_on:
+  #     - prometheus
+  #   networks:
+  #     - backend
+
+  # loki:
+  #   image: grafana/loki:2.8.2
+  #   container_name: loki
+  #   ports:
+  #     - "3100:3100"
+  #   networks:
+  #     - backend
+      # UDP 8600 removed to avoid conflicts
+    # networks:
+    #   - backend
+
 # ================================
 # 🔵 Volumes
 # ================================

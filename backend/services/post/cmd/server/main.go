@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -29,7 +30,7 @@ func main() {
 		Address:     "post-service",
 		Port:        50052,
 		Tags:        []string{"post"},
-		TTL:         8 * time.Second,
+		TTL:         30 * time.Second,
 		CheckID:     "check_health",
 	}
 
@@ -49,6 +50,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	go func() {
+		fmt.Println("Metrics server running on :9090")
+		if err := http.ListenAndServe(":9090", nil); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Metrics server failed: %v", err)
+		}
+	}()
 
 	server := grpc.NewServer()
 	pb.RegisterPostServiceServer(server, postHandler)

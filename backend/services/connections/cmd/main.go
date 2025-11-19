@@ -4,6 +4,7 @@ import (
 	"connections/internal/config"
 	"connections/internal/consul"
 	"connections/internal/server"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -31,12 +32,18 @@ func main() {
 		Address:     "connection-service",
 		Port:        50053,
 		Tags:        []string{"connection"},
-		TTL:         8 * time.Second,
+		TTL:         30 * time.Second,
 		CheckID:     "check_health",
 	}
 
 	agent.RegisterService(serviceCfg)
 	http.Handle("/metrics", promhttp.Handler())
+	go func() {
+		fmt.Println("Metrics server running on :9090")
+		if err := http.ListenAndServe(":9090", nil); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Metrics server failed: %v", err)
+		}
+	}()
 
 	config.ConnectNeo4j(uri, username, password)
 	server.Run()
